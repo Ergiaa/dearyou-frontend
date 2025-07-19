@@ -15,7 +15,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 
 // Temporary auth state for demo - replace with actual auth check
-const isAuthenticated = true;
+const isAuthenticated = false;
 const user = { name: "Sarah" };
 
 const fadeIn = {
@@ -130,10 +130,7 @@ export default function Home() {
                 variants={fadeIn}
                 className="font-serif text-3xl sm:text-5xl md:text-6xl lg:text-7xl"
               >
-                Write Letters That{" "}
-                <span className="bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
-                  Matter
-                </span>
+                Write Letters That <span className="text-primary">Matter</span>
               </motion.h1>
               <motion.p
                 variants={fadeIn}
@@ -159,7 +156,7 @@ export default function Home() {
                   size="lg"
                   className="rounded-2xl"
                 >
-                  <Link href="/auth/login">Sign In / Register</Link>
+                  <Link href="/login">Sign In / Register</Link>
                 </Button>
               </motion.div>
             </>
