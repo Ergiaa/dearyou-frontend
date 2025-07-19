@@ -1,103 +1,247 @@
-import Image from "next/image";
+"use client";
+
+import Link from "next/link";
+import {
+  PenLine,
+  Share2,
+  Lock,
+  Heart,
+  BookOpen,
+  Inbox,
+  Users,
+} from "lucide-react";
+import { motion } from "framer-motion";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+
+// Temporary auth state for demo - replace with actual auth check
+const isAuthenticated = true;
+const user = { name: "Sarah" };
+
+const fadeIn = {
+  initial: { opacity: 0, y: 20 },
+  animate: { opacity: 1, y: 0 },
+  transition: { duration: 0.5 },
+};
+
+const stagger = {
+  animate: {
+    transition: {
+      staggerChildren: 0.2,
+    },
+  },
+};
+
+// Core features available to all users
+const coreFeatures = [
+  {
+    icon: PenLine,
+    title: "Write Freely",
+    description:
+      "Create letters for yourself, loved ones, or the world. Your words, your choice.",
+  },
+  {
+    icon: Share2,
+    title: "Easy Sharing",
+    description:
+      "Each letter gets a unique link. Share it with specific people or keep it private.",
+  },
+  {
+    icon: Lock,
+    title: "Privacy Control",
+    description:
+      "Choose who can read your letters. Make them public, private, or share with select readers.",
+  },
+];
+
+// Additional features for authenticated users
+const authFeatures = [
+  {
+    icon: BookOpen,
+    title: "Letter Collection",
+    description:
+      "Build your personal collection of letters, drafts, and memories.",
+    link: "/dashboard",
+  },
+  {
+    icon: Heart,
+    title: "Favorites",
+    description: "Save and organize your most meaningful letters.",
+    link: "/dashboard/favorites",
+  },
+  {
+    icon: Users,
+    title: "Community",
+    description:
+      "Connect with others and share your letters with trusted readers.",
+    link: "/dashboard/community",
+  },
+];
 
 export default function Home() {
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+    <div className="flex-1">
+      {/* Hero Section */}
+      <section className="relative min-h-[50vh] overflow-hidden bg-gradient-to-b from-background to-muted/20">
+        <div className="absolute inset-0 bg-grid-pattern" />
+        <motion.div
+          initial="initial"
+          animate="animate"
+          variants={stagger}
+          className="container relative flex min-h-[50vh] max-w-[64rem] flex-col items-center justify-center gap-8 text-center mx-auto py-20"
+        >
+          {isAuthenticated ? (
+            // Authenticated Hero Content
+            // Authenticated Hero Content
+            <>
+              <motion.div variants={fadeIn} className="space-y-4">
+                <h1 className="font-serif text-4xl sm:text-5xl md:text-6xl">
+                  Welcome back,{" "}
+                  <span className="text-primary">{user.name}</span>
+                </h1>
+                <p className="text-lg text-muted-foreground">
+                  Ready to write another heartfelt letter?
+                </p>
+              </motion.div>
+              <motion.div
+                variants={fadeIn}
+                className="flex flex-col gap-4 sm:flex-row sm:gap-6"
+              >
+                <Button asChild size="lg" className="rounded-2xl min-w-[160px]">
+                  <Link href="/letter/new">
+                    <PenLine className="mr-2 h-5 w-5" />
+                    Write a Letter
+                  </Link>
+                </Button>
+                <Button
+                  asChild
+                  variant="outline"
+                  size="lg"
+                  className="rounded-2xl min-w-[160px]"
+                >
+                  <Link href="/dashboard">View Your Letters</Link>
+                </Button>
+              </motion.div>
+            </>
+          ) : (
+            // Unauthenticated Hero Content
+            <>
+              <motion.h1
+                variants={fadeIn}
+                className="font-serif text-3xl sm:text-5xl md:text-6xl lg:text-7xl"
+              >
+                Write Letters That{" "}
+                <span className="bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
+                  Matter
+                </span>
+              </motion.h1>
+              <motion.p
+                variants={fadeIn}
+                className="max-w-[42rem] leading-normal text-muted-foreground sm:text-xl sm:leading-8"
+              >
+                A heartfelt space to write letters to your future self, loved
+                ones, or share your thoughts with the world. Capture moments,
+                feelings, and dreams that deserve to be remembered.
+              </motion.p>
+              <motion.div
+                variants={fadeIn}
+                className="flex flex-col gap-4 sm:flex-row sm:gap-6"
+              >
+                <Button asChild size="lg" className="rounded-2xl">
+                  <Link href="/letter/new">
+                    <PenLine className="mr-2 h-4 w-4" />
+                    Write as Guest
+                  </Link>
+                </Button>
+                <Button
+                  asChild
+                  variant="outline"
+                  size="lg"
+                  className="rounded-2xl"
+                >
+                  <Link href="/auth/login">Sign In / Register</Link>
+                </Button>
+              </motion.div>
+            </>
+          )}
+        </motion.div>
+      </section>
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+      {/* Core Features Section */}
+      <section className="border-t bg-muted/50 py-20">
+        <motion.div
+          initial="initial"
+          whileInView="animate"
+          viewport={{ once: true }}
+          variants={stagger}
+          className="container flex max-w-5xl flex-col items-center mx-auto"
+        >
+          <motion.h2
+            variants={fadeIn}
+            className="mb-12 text-center font-serif text-3xl"
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+            How DearYou Works
+          </motion.h2>
+          <div className="grid gap-8 md:grid-cols-3 w-full">
+            {coreFeatures.map((feature, i) => (
+              <motion.div key={i} variants={fadeIn}>
+                <Card className="h-full border-2 p-6 rounded-2xl">
+                  <CardContent className="space-y-4 p-0 text-center">
+                    <feature.icon className="mx-auto h-12 w-12 text-primary" />
+                    <h3 className="font-medium">{feature.title}</h3>
+                    <p className="text-sm text-muted-foreground">
+                      {feature.description}
+                    </p>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
+      </section>
+
+      {/* Additional Features for Authenticated Users */}
+      {isAuthenticated && (
+        <section className="border-t bg-background py-20">
+          <motion.div
+            initial="initial"
+            whileInView="animate"
+            viewport={{ once: true }}
+            variants={stagger}
+            className="container flex max-w-5xl flex-col items-center mx-auto"
           >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+            <motion.h2
+              variants={fadeIn}
+              className="mb-4 text-center font-serif text-3xl"
+            >
+              User Features
+            </motion.h2>
+            <motion.p
+              variants={fadeIn}
+              className="mb-12 text-center text-muted-foreground"
+            >
+              Unlock more possibilities with your account
+            </motion.p>
+            <div className="grid gap-8 md:grid-cols-3 w-full">
+              {authFeatures.map((feature, i) => (
+                <motion.div key={i} variants={fadeIn}>
+                  <Link href={feature.link}>
+                    <Card className="h-full border-2 p-6 rounded-2xl transition-colors hover:bg-accent hover:border-accent">
+                      <CardContent className="space-y-4 p-0 text-center">
+                        <feature.icon className="mx-auto h-12 w-12 text-primary" />
+                        <h3 className="font-medium">{feature.title}</h3>
+                        <p className="text-sm text-muted-foreground">
+                          {feature.description}
+                        </p>
+                      </CardContent>
+                    </Card>
+                  </Link>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+        </section>
+      )}
     </div>
   );
 }
